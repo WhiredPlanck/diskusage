@@ -88,7 +88,7 @@ public class DiskUsage extends LoadableActivity {
 
   private String pathToDelete;
 
-  public DiskUsageMenu menu = DiskUsageMenu.getInstance(this);
+  public DiskUsageMenu menu = new DiskUsageMenu(this);
   RendererManager rendererManager = new RendererManager(this);
 
   @Override
