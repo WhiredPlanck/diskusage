@@ -1,7 +1,7 @@
 <resources>
     <style name="Theme" parent="android:Theme.DeviceDefault">
     </style>
-    <style name="Theme.NoBackground" parent="android:Theme.DeviceDefault">
+    <style name="Theme.NoBackground" parent="Theme.AppCompat">
         <item name="android:windowBackground">@null</item>
     </style>
 </resources>
