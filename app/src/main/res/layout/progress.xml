@@ -14,40 +14,48 @@
      limitations under the License.
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content" android:layout_height="match_parent">
-        <ProgressBar android:id="@+id/progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dip"
-            android:layout_marginBottom="1dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            android:id="@+id/progress_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:layout_alignParentLeft="true"
-            android:inputType="textNoSuggestions"
-            android:layout_below="@id/progress"
-        />
-        <TextView
-            android:id="@+id/progress_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dip"
-            android:layout_marginLeft="50dip"
-            android:layout_marginRight="15dip"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/progress"
-            android:maxLines="1"
-            android:gravity="left"
-            android:inputType="textNoSuggestions"
-            android:ellipsize="none"
-        />
-</RelativeLayout>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="12dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginBottom="1dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/progress_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:inputType="textNoSuggestions"
+        android:paddingBottom="12dip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progress" />
+
+    <TextView
+        android:id="@+id/progress_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dip"
+        android:layout_marginEnd="15dip"
+        android:ellipsize="none"
+        android:gravity="start"
+        android:inputType="textNoSuggestions"
+        android:paddingBottom="12dip"
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progress" />
+</androidx.constraintlayout.widget.ConstraintLayout>

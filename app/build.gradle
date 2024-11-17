@@ -58,6 +58,7 @@ dependencies {
     implementation 'me.zhanghai.android.appiconloader:appiconloader:1.5.0'
     implementation "com.louiscad.splitties:splitties-toast:$splitties_version"
     implementation "com.louiscad.splitties:splitties-resources:$splitties_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
 
     testImplementation 'junit:junit:4.13.2'
 }
