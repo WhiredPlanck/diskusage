@@ -24,16 +24,23 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.diskusage.R;
 import com.google.android.diskusage.databinding.DeleteViewBinding;
 import com.google.android.diskusage.filesystem.entity.FileSystemEntry;
+import com.google.android.diskusage.ui.common.FileInfo;
 import com.google.android.diskusage.ui.common.FileInfoAdapter;
 import com.google.android.diskusage.utils.Logger;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import kotlin.io.FileTreeWalk;
+import kotlin.io.FileWalkDirection;
 
 public class DeleteActivity extends Activity {
   public static final String NUM_FILES_KEY = "numFiles";
   public static final String SIZE_KEY = "size";
-  
+
   Intent responseIntent;
 
   @Override
@@ -51,24 +58,26 @@ public class DeleteActivity extends Activity {
     setContentView(binding.getRoot());
     String sizeString = getIntent().getStringExtra(SIZE_KEY);
     int count = getIntent().getIntExtra(NUM_FILES_KEY, 0);
-    FileInfoAdapter.setMessage(
-        this, binding.summary, count, sizeString);
+    final File file = new File(absolutePath);
+    if (file.exists()) {
+      final ArrayList<FileInfo> infos = new ArrayList<>();
+      final FileTreeWalk fileTreeWalk = new FileTreeWalk(file, FileWalkDirection.TOP_DOWN);
+      for (Iterator<File> it = fileTreeWalk.iterator(); it.hasNext(); ) {
+        File sub = it.next();
+        if (sub.isFile()) {
+          final String size = FileSystemEntry.calcSizeString(sub.length());
+          infos.add(new FileInfo(size, sub.getName()));
+        } else if (sub.isDirectory()) {
+          infos.add(new FileInfo("", sub.getName()));
+        }
+      }
+      binding.list.setLayoutManager(new LinearLayoutManager(this));
+      binding.list.setAdapter(new FileInfoAdapter(infos));
+    }
+    binding.summary.setText(getString(R.string.delete_summary, count, sizeString));
 
     responseIntent = new Intent();
     responseIntent.putExtra(DiskUsage.DELETE_PATH_KEY, path);
-    binding.list.setAdapter(new FileInfoAdapter(
-        this,
-        absolutePath,
-        count,
-        binding.summary));
-    /* binding.okButton.setOnClickListener(view -> {
-      setResult(DiskUsage.RESULT_DELETE_CONFIRMED, responseIntent);
-      finish();
-    });
-    binding.cancelButton.setOnClickListener(view -> {
-      setResult(DiskUsage.RESULT_DELETE_CANCELED);
-      finish();
-    }); **/
   }
 
   @Override
@@ -91,11 +100,4 @@ public class DeleteActivity extends Activity {
     }
     return super.onOptionsItemSelected(item);
   }
-
-  /*
-  @Override
-  protected void onPause() {
-    super.onPause();
-    // Debug.stopMethodTracing();
-  } **/
 }
