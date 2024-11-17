@@ -17,7 +17,7 @@ class SearchManager(private val menu: DiskUsageMenu) {
         override fun run() {
             try {
                 val root = menu.masterRoot
-                newRoot = root.filter(this.query, baseRoot.displayBlockSize) as FileSystemSuperRoot
+                newRoot = root?.filter(this.query, baseRoot.displayBlockSize) as FileSystemSuperRoot
                 if (isInterrupted) return
                 menu.diskusage.handler.post { searchFinished(this@Search) }
             } catch (ignored: SearchInterruptedException) {
@@ -48,7 +48,7 @@ class SearchManager(private val menu: DiskUsageMenu) {
             }
         }
         if (baseRoot != null) {
-            val search = Search(query, baseRoot)
+            val search = Search(query, baseRoot!!)
             search.start()
         } else {
             menu.finishedSearch(null, null)

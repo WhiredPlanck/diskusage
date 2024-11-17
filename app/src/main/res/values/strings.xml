@@ -96,4 +96,7 @@
 </string-array>
     <string name="about_view_source_code"><![CDATA[View source code at %s]]></string>
     <string name="action_about">About</string>
+    <string name="rederer">Renderer</string>
+    <string name="software_renderer">Software Renderer</string>
+    <string name="hardware_renderer">Hardware Renderer</string>
 </resources>

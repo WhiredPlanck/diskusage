@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +34,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.Menu;
@@ -69,7 +69,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+
 import splitties.toast.ToastKt;
 
 public class DiskUsage extends LoadableActivity {
@@ -94,10 +94,11 @@ public class DiskUsage extends LoadableActivity {
   @Override
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
+    final DiskUsageViewModel viewModel = new ViewModelProvider(this).get(DiskUsageViewModel.class);
     Logger.getLOGGER().d("DiskUsage.onCreate()");
     ActivityCommonBinding binding = ActivityCommonBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
-    menu.onCreate();
+    menu.onCreate(viewModel);
     Intent i = getIntent();
 
 
@@ -179,7 +180,8 @@ public class DiskUsage extends LoadableActivity {
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-    return super.onCreateOptionsMenu(menu);
+    this.menu.setupToolbarMenu(menu);
+    return true;
   }
 
   private static abstract class VersionedPackageViewer {
@@ -254,13 +256,6 @@ public class DiskUsage extends LoadableActivity {
       i.putExtra(DeleteActivity.SIZE_KEY, entry.sizeString());
       this.startActivityForResult(i, 0);
     }
-  }
-
-  public boolean isIntentAvailable(Intent intent) {
-    final PackageManager packageManager = getPackageManager();
-    List<ResolveInfo> res = packageManager.queryIntentActivities(
-        intent, PackageManager.MATCH_DEFAULT_ONLY);
-    return res.size() > 0;
   }
 
   public void view(FileSystemEntry entry) {
@@ -676,13 +671,6 @@ public class DiskUsage extends LoadableActivity {
       app.applyFilter(blockSize);
     }
     Arrays.sort(apps, FileSystemEntry.COMPARE);
-  }
-
-  @Override
-  public boolean onPrepareOptionsMenu(Menu menu) {
-    super.onPrepareOptionsMenu(menu);
-    this.menu.onPrepareOptionsMenu(menu);
-    return true;
   }
 
   @Override
