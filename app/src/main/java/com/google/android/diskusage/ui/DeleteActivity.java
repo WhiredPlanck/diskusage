@@ -30,7 +30,7 @@ import com.google.android.diskusage.databinding.DeleteViewBinding;
 import com.google.android.diskusage.filesystem.entity.FileSystemEntry;
 import com.google.android.diskusage.ui.common.FileInfo;
 import com.google.android.diskusage.ui.common.FileInfoAdapter;
-import com.google.android.diskusage.utils.Logger;
+import timber.log.Timber;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -52,7 +52,7 @@ public class DeleteActivity extends Activity {
         DiskUsage.DELETE_PATH_KEY);
     final String absolutePath = getIntent().getStringExtra(
             DiskUsage.DELETE_ABSOLUTE_PATH_KEY);
-    Logger.getLOGGER().d("DeleteActivity.onResume(): %s -> %s", path, absolutePath);
+    Timber.d("onResume: %s -> %s", path, absolutePath);
 
     DeleteViewBinding binding = DeleteViewBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());

@@ -38,7 +38,7 @@ import com.google.android.diskusage.R;
 import com.google.android.diskusage.databinding.ActivityCommonBinding;
 import com.google.android.diskusage.filesystem.mnt.MountPoint;
 import splitties.toast.ToastKt;
-import com.google.android.diskusage.utils.Logger;
+import timber.log.Timber;
 
 public class PermissionRequestActivity extends Activity {
     private final static int DISKUSAGE_REQUEST_CODE = 10;

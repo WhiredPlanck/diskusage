@@ -61,7 +61,7 @@ import com.google.android.diskusage.filesystem.entity.FileSystemRoot;
 import com.google.android.diskusage.filesystem.entity.FileSystemSuperRoot;
 import com.google.android.diskusage.filesystem.entity.FileSystemSystemSpace;
 import com.google.android.diskusage.ui.common.ScanProgressDialog;
-import com.google.android.diskusage.utils.Logger;
+import timber.log.Timber;
 
 import org.jetbrains.annotations.Contract;
 import java.io.File;
@@ -95,7 +95,7 @@ public class DiskUsage extends LoadableActivity {
   protected void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     final DiskUsageViewModel viewModel = new ViewModelProvider(this).get(DiskUsageViewModel.class);
-    Logger.getLOGGER().d("DiskUsage.onCreate()");
+    Timber.d("DiskUsage.onCreate()");
     ActivityCommonBinding binding = ActivityCommonBinding.inflate(getLayoutInflater());
     setContentView(binding.getRoot());
     menu.onCreate(viewModel);
@@ -115,7 +115,7 @@ public class DiskUsage extends LoadableActivity {
       finish();
       return;
     }
-    Logger.getLOGGER().d("DiskUsage.onCreate(), rootPath = %s, receivedState = %s",
+    Timber.d("DiskUsage.onCreate(), rootPath = %s, receivedState = %s",
             mountPoint.getRoot(), receivedState);
     if (receivedState != null) onRestoreInstanceState(receivedState);
   }
@@ -196,7 +196,7 @@ public class DiskUsage extends LoadableActivity {
   private final class GingerbreadPackageViewer extends VersionedPackageViewer {
     @Override
     void viewPackage(String pkg) {
-      Logger.getLOGGER().d("Show package = %s", pkg);
+      Timber.d("Show package = %s", pkg);
       Intent viewIntent = new Intent(
           Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
           Uri.parse("package:" + pkg));
@@ -225,7 +225,7 @@ public class DiskUsage extends LoadableActivity {
   public void askForDeletion(@NonNull final FileSystemEntry entry) {
     final String path = entry.path2();
     final String fullPath = entry.absolutePath();
-    Logger.getLOGGER().d("Deletion requested for %s", path);
+    Timber.d("Deletion requested for %s", path);
 
     if (entry instanceof FileSystemEntrySmall) {
       ToastKt.toast("Delete directory instead");
@@ -405,7 +405,7 @@ public class DiskUsage extends LoadableActivity {
 
   @Override
   protected void onRestoreInstanceState(@NonNull final Bundle inState) {
-    Logger.getLOGGER().d("DiskUsage.onRestoreInstanceState(), rootPath = %s", inState.getString(KEY_KEY));
+    Timber.d("DiskUsage.onRestoreInstanceState(), rootPath = %s", inState.getString(KEY_KEY));
 
     if (fileSystemState != null)
       fileSystemState.restoreStateInRenderThread(inState);
@@ -458,7 +458,7 @@ public class DiskUsage extends LoadableActivity {
       try {
         stats = new StatFsSourceImpl(mountPoint.getRoot());
       } catch (IllegalArgumentException e) {
-        Logger.getLOGGER().e(e, "Failed to get filesystem stats for " + mountPoint.getRoot());
+        Timber.e(e, "Failed to get filesystem stats for " + mountPoint.getRoot());
       }
       if (stats != null) {
         blockSize = stats.getBlockSizeLong();
@@ -575,7 +575,7 @@ public class DiskUsage extends LoadableActivity {
     try {
       return (new Apps2SDLoader(this).load(blockSize));
     } catch (Throwable t) {
-      Logger.getLOGGER().e("DiskUsage.loadApps2SD(): Problem loading apps2sd info", t);
+      Timber.e(t, "loadApps2SD: Problem loading apps2sd info");
       return null;
     }
   }

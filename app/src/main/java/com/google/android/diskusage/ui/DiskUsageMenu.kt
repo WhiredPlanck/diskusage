@@ -22,9 +22,9 @@ import com.google.android.diskusage.filesystem.entity.FileSystemSpecial
 import com.google.android.diskusage.filesystem.entity.FileSystemSuperRoot
 import com.google.android.diskusage.filesystem.mnt.MountPoint
 import com.google.android.diskusage.utils.AppIconCache.getOrLoadBitmap
-import com.google.android.diskusage.utils.Logger.Companion.LOGGER
 import com.google.android.diskusage.utils.item
 import splitties.resources.styledColor
+import timber.log.Timber
 
 class DiskUsageMenu(val diskusage: DiskUsage) {
     var masterRoot: FileSystemSuperRoot? = null
@@ -64,7 +64,7 @@ class DiskUsageMenu(val diskusage: DiskUsage) {
                     it.setQuery(searchPattern, false)
                 }
                 it.setOnCloseListener {
-                    LOGGER.d("Search process closed")
+                    Timber.d("Search process closed")
                     searchPattern = null
                     diskusage.applyPatternNewRoot(masterRoot, null)
                     false
@@ -76,7 +76,7 @@ class DiskUsageMenu(val diskusage: DiskUsage) {
                     }
 
                     override fun onQueryTextChange(newText: String): Boolean {
-                        LOGGER.d("Search query changed to: %s", newText)
+                        Timber.d("Search query changed to: %s", newText)
                         searchPattern = newText
                         applyPattern(searchPattern)
                         return true
@@ -209,7 +209,7 @@ class DiskUsageMenu(val diskusage: DiskUsage) {
                     diskusage.packageName, 0
                 ).versionName
             } catch (e: PackageManager.NameNotFoundException) {
-                LOGGER.e(e, "Package '${diskusage.packageName}' not found")
+                Timber.e(e, "Package '${diskusage.packageName}' not found")
             }
             AlertDialog.Builder(diskusage)
                 .setView(binding.root)
